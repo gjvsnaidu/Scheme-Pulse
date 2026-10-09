@@ -1,0 +1,5 @@
+# Ignore OS and editor junk for the SchemePulse demo repo.
+git/
+.DS_Store
+Thumbs.db
+*.log
