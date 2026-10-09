@@ -1,0 +1,46 @@
+{
+  "name": "schemepulse-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsup src/index.ts --format esm --target node20 --clean",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "seed": "tsx src/seed-cli.ts",
+    "import:portals": "tsx src/portal-import-cli.ts",
+    "import:kaggle": "tsx src/kaggle-import-cli.ts"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.3.0",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.2",
+    "nodemailer": "^6.9.16",
+    "pg": "^8.13.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.10.0",
+    "@types/nodemailer": "^6.4.17",
+    "@types/pg": "^8.11.10",
+    "@types/supertest": "^6.0.2",
+    "supertest": "^7.0.0",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: schemepulse
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: schemepulse
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U schemepulse"]
+      interval: 5s
+      retries: 10
+  app:
+    build: .
+    depends_on:
+      db: { condition: service_healthy }
+    ports: ["4000:4000"]
+    environment:
+      DATABASE_URL: postgres://schemepulse:${POSTGRES_PASSWORD}@db:5432/schemepulse
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env (32+ random characters)}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:4000}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}   # set to true behind HTTPS
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      SEED_DEMO: ${SEED_DEMO:-false}
+      OFFICIAL_SCHEME_FEEDS: "${OFFICIAL_SCHEME_FEEDS:-[]}"
+      OFFICIAL_SCHEME_SYNC_MINUTES: ${OFFICIAL_SCHEME_SYNC_MINUTES:-60}
+      AI_PROVIDER: ${AI_PROVIDER:-rules}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-sonnet-5-5}
+      SMTP_URL: ${SMTP_URL:-}
+      STORAGE_DRIVER: ${STORAGE_DRIVER:-local}
+    volumes: [uploads:/data/uploads]
+volumes: { pgdata: {}, uploads: {} }

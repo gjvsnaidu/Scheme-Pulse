@@ -1,0 +1,21 @@
+# Render blueprint: one Docker web service (API + built SPA) and a managed Postgres.
+# Uploaded documents need object storage on Render (STORAGE_DRIVER=s3) or a paid persistent disk.
+services:
+  - type: web
+    name: schemepulse
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/health
+    envVars:
+      - { key: DATABASE_URL, fromDatabase: { name: schemepulse-db, property: connectionString } }
+      - { key: JWT_SECRET, generateValue: true }
+      - { key: ADMIN_EMAIL, sync: false }
+      - { key: ADMIN_PASSWORD, sync: false }
+      - { key: CORS_ORIGIN, sync: false }   # your public URL, e.g. https://schemepulse.onrender.com
+      - { key: COOKIE_SECURE, value: "true" }
+      - { key: SEED_DEMO, value: "false" }
+      - { key: OFFICIAL_SCHEME_FEEDS, sync: false }
+      - { key: OFFICIAL_SCHEME_SYNC_MINUTES, value: "60" }
+databases:
+  - name: schemepulse-db
+    plan: basic-256mb
